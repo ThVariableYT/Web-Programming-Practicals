@@ -1,7 +1,8 @@
 # Web Programming Practicals
 All the practicals done in Web Programming sessions of FYIT Semester 2
 ### Web-Programming Practicals  
-![Project Banner](![php-programming-language](https://github.com/user-attachments/assets/acea8f38-de07-4c36-b866-a0e7d6b57ee6))  
+!<img width="1340" height="2907" alt="github com_ThVariableYT_Python-Practicals" src="https://github.com/user-attachments/assets/50da5d0c-4c57-4db0-bc7d-4632ec892f2d" />
+  
 
 > All the practicals done in Web Programming sessions of FYIT Semester 2  
 
