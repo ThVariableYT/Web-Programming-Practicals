@@ -1,7 +1,8 @@
 # Web Programming Practicals
 All the practicals done in Web Programming sessions of FYIT Semester 2
 ### Web-Programming Practicals  
-![php-programming-language](https://github.com/user-attachments/assets/63452d7b-c40c-4456-a948-0d17b71fd788)
+![php-programming-language](https://github.com/user-attachments/assets/d32d621f-7119-4ff7-8584-6a218784d756)
+
 
   
 
