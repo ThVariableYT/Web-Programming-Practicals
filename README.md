@@ -41,12 +41,19 @@ cd Web-Programming-Practicals
 
 - Install and launch your environment (Apache + PHP).
 
-- Copy (or move) the cloned folder Web-Programming-Practicals/ into your web-server’s document root (e.g., htdocs/ for XAMPP).
+- To install wampserver, [click here](https://sourceforge.net/projects/wampserver/)
 
-- If using XAMPP on Windows: your folder might be C:\xampp\htdocs\Web-Programming-Practicals.
+- Copy (or move) the cloned folder Web-Programming-Practicals/ into your web-server’s document root (e.g., www/ for WampServer).
 
-- In your browser navigate to:
- http://localhost/Web-Programming-Practicals/
+- If using WampServer64 on Windows: your folder might be "D:\wamp64\www\FYIT_4".
+
+- After setting up and installing wampserver64 (make sure you install wampserver64 on the root of your drive, for eg. C:/ or D:/), check if all the services are started and running.
+
+- If the services are running, click on the system tray icon and left click on the wampserver icon.
+
+- Click on the "localhost" option. A new browser window should open.
+
+- Scroll down and navigate to your folder which you created in the "www" folder.
 
 - Click on any file (e.g., Odd-Even.php) to see its output.
 
