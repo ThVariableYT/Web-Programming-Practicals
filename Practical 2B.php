@@ -18,3 +18,4 @@ else
 {
     echo "$n is a prime number";
 }
+?>
