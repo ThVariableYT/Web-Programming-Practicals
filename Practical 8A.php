@@ -1,18 +1,18 @@
 <?php
 //"8a,php"
-$con=mysql_connect(server: "localhost",username: "root",password: "");
+$con=mysqli_connect("localhost", "root","");
 if(!$con)
-die('could not connect: '.mysql_error());
-if(mysql_query(query: "create database NKCollege", link_identifier: $con))
+die('could not connect: '.mysqli_error($con));
+if(mysqli_query($con, "create database NKCollege"))
 echo "Database created successfully";
 else
-echo "Error creating database:".mysql_error();
-mysql_select_db(database_name: "NKCollege", link_identifier: $con);
+echo "Error creating database:".mysqli_error($con);
+mysqli_select_db($con, "NKCollege");
 $query=" create table department (dname varchar(50),
 dno smallint, no_of_faculty smallint)";
-if(mysql_query(query: $query, link_identifier: $con))
+if(mysqli_query($con, $query))
 echo "Table Created successfully";
 else
-echo "Error creating table:".mysql_error();
-mysql_close(link_identifier: $con);
+echo "Error creating table:".mysqli_error($con);
+mysqli_close($con);
 ?>
