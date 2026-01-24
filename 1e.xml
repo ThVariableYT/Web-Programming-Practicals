@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE employee SYSTEM "employee.dtd">
+<?xml-stylesheet type="text/css" href="cssemployee.css"?>
+<employee>
+     <firstname>Jash</firstname>
+     <lastname>Gandhi</lastname>
+     <email>jashg211007@gmail.com</email>
+</employee>
