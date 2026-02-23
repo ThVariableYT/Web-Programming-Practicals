@@ -1,0 +1,13 @@
+<?xml-stylesheet type = "text/xsl" href = "student.xsl"?>
+<class>
+	<student>
+		<firstname>Anita</firstname>
+		<lastname>Shah</lastname>
+		<nickname>Anni</nickname>
+	</student>
+	<student>
+		<firstname>Vinita</firstname>
+		<lastname>Thakur</lastname>
+		<nickname>Vini</nickname>
+	</student>
+</class>

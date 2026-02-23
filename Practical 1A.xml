@@ -1,0 +1,14 @@
+<?xml version=1.0?>
+<sports>
+<cricketers>
+<name> Virat Kohli </name>
+<hundreds> 75 </hundreds>
+<fifties> 130 </fifties>
+</cricketers>
+
+<cricketers>
+<name> Steve Smith </name>
+<hundreds> 44 </hundreds>
+<fifties> 70 </fifties>
+</cricketers>
+</sports>
