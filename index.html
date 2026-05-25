@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Visualizer</title>
+    <title>Code Visualizer & Immersive IDE</title>
     
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,89 +24,92 @@
     <style>
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #020617; 
+            background-color: #030712; 
             color: #f8fafc; 
             overflow: hidden;
+            transition: background-color 0.5s ease;
         }
         code, pre { font-family: 'Fira Code', monospace; }
         
         /* Smooth Liquid Glass Effects */
         .glass-panel {
-            background: rgba(15, 23, 42, 0.45);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 17, 34, 0.45);
+            backdrop-filter: blur(24px) saturate(220%);
+            -webkit-backdrop-filter: blur(24px) saturate(220%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
         
         .glass-header {
-            background: rgba(2, 6, 23, 0.55);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            background: rgba(3, 7, 18, 0.5);
+            backdrop-filter: blur(32px) saturate(200%);
+            -webkit-backdrop-filter: blur(32px) saturate(200%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
 
         .glass-button {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .glass-button:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .glass-button:active {
-            transform: scale(0.95);
+            transform: translateY(1px) scale(0.97);
         }
 
         /* Animated Ambient Background Blobs */
         @keyframes blob {
             0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(40px, -60px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
+            33% { transform: translate(50px, -70px) scale(1.15); }
+            66% { transform: translate(-40px, 40px) scale(0.85); }
             100% { transform: translate(0px, 0px) scale(1); }
         }
-        .animate-blob { animation: blob 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
+        .animate-blob { animation: blob 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
+        .animation-delay-2000 { animation-delay: 2.5s; }
+        .animation-delay-4000 { animation-delay: 5s; }
 
         /* Custom Soft Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; transition: background 0.3s; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
 
         /* Hide Scrollbar utility */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Tree Styles with Smooth Animations */
+        /* Tree Styles with Smooth Animations & Glow Indicators */
         .tree-item { 
             cursor: pointer; 
             user-select: none; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
             border: 1px solid transparent; 
         }
         .tree-item:hover { 
-            background-color: rgba(255, 255, 255, 0.06); 
-            border-color: rgba(255, 255, 255, 0.05); 
+            background-color: rgba(255, 255, 255, 0.05); 
+            border-color: rgba(255, 255, 255, 0.04); 
             transform: translateX(4px); 
         }
         .tree-item.active { 
-            background: rgba(59, 130, 246, 0.2); 
-            border-color: rgba(59, 130, 246, 0.3); 
-            color: #fff; 
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2), inset 0 0 10px rgba(59, 130, 246, 0.1); 
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%); 
+            border-color: rgba(59, 130, 246, 0.25); 
+            border-left-width: 3px;
+            border-left-color: #3b82f6;
+            color: #ffffff; 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1); 
         }
         
         .folder-content { 
             overflow: hidden; 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); 
             opacity: 1; 
             transform-origin: top; 
             max-height: 2000px;
@@ -119,7 +122,7 @@
         
         /* Smooth Desktop Sidebar Toggle */
         #sidebar {
-            transition: margin-left 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
         }
         @media (min-width: 768px) {
             .desktop-collapsed {
@@ -139,17 +142,30 @@
 
         /* Fullscreen overrides */
         #viewer-section:fullscreen {
-            background-color: #020617; 
+            background-color: #030712; 
+        }
+
+        /* Ambient interactive card styling */
+        .interactive-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .interactive-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            border-color: rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(59, 130, 246, 0.1);
         }
 
         /* Markdown Body Styling */
         .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #f8fafc; font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.25em; }
-        .markdown-body p { margin-bottom: 1em; line-height: 1.6; }
+        .markdown-body p { margin-bottom: 1em; line-height: 1.7; }
         .markdown-body ul, .markdown-body ol { margin-bottom: 1em; padding-left: 1.5em; }
         .markdown-body ul { list-style-type: disc; }
         .markdown-body ol { list-style-type: decimal; }
-        .markdown-body code { font-family: 'Fira Code', monospace; background-color: rgba(255,255,255,0.1); padding: 0.2em 0.4em; border-radius: 6px; font-size: 0.9em; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.05); }
-        .markdown-body pre { background: rgba(0, 0, 0, 0.3); padding: 1em; border-radius: 12px; overflow-x: auto; margin-bottom: 1em; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); }
+        .markdown-body code { font-family: 'Fira Code', monospace; background-color: rgba(255,255,255,0.08); padding: 0.2em 0.4em; border-radius: 6px; font-size: 0.9em; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.05); }
+        .markdown-body pre { background: rgba(0, 0, 0, 0.4); padding: 1.25em; border-radius: 12px; overflow-x: auto; margin-bottom: 1em; border: 1px solid rgba(255,255,255,0.06); box-shadow: inset 0 2px 10px rgba(0,0,0,0.3); }
         .markdown-body pre code { background-color: transparent; padding: 0; border: none; backdrop-filter: none; }
         .markdown-body a { color: #60a5fa; text-decoration: none; transition: color 0.2s; }
         .markdown-body a:hover { color: #93c5fd; text-decoration: underline; }
@@ -157,15 +173,47 @@
         .markdown-body img { max-width: 100%; border-radius: 8px; margin: 1em 0; border: 1px solid rgba(255,255,255,0.1); }
 
         /* Light Theme Overrides */
-        .light-code-theme #code-container { background-color: #ffffff; color: #24292e; border-radius: 12px; margin: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
-        .light-code-theme #line-numbers { color: #1b1f244d; border-right: 1px solid #e1e4e8; background-color: #f6f8fa; border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+        .light-code-theme #code-container { background-color: #ffffff; color: #1f2328; border-radius: 12px; margin: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
+        .light-code-theme #line-numbers { color: #57606a; border-right: 1px solid #d0d7de; background-color: #f6f8fa; border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+
+        /* Dynamic Tabs styling */
+        .file-tab {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .file-tab.active {
+            background: rgba(30, 41, 59, 0.5);
+            border-bottom-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        /* Skeleton Line animation for simulated loading */
+        .skeleton-line {
+            height: 12px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+            background-size: 200% 100%;
+            animation: loadingSkeleton 1.5s infinite;
+            border-radius: 6px;
+        }
+        @keyframes loadingSkeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Pulsing AI sparkles */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(168,85,247,0.2); }
+            50% { box-shadow: 0 0 20px rgba(168,85,247,0.5); }
+        }
+        .ai-pulsing-glow {
+            animation: pulseGlow 2s infinite;
+        }
 
         /* Robust Print Styling */
         @media print {
             * { text-shadow: none !important; box-shadow: none !important; }
             @page { margin: 1.5cm; }
             body, html { background: #ffffff !important; color: #000000 !important; height: auto !important; min-height: auto !important; overflow: visible !important; display: block !important; }
-            .fixed, aside, header, #ai-panel, button, #sidebar-overlay, .glass-button, #line-numbers { display: none !important; }
+            .fixed, aside, header, #ai-panel, button, #sidebar-overlay, .glass-button, #line-numbers, #file-tabs-bar { display: none !important; }
             main, section, #content-container, #code-container, pre, code { overflow: visible !important; height: auto !important; position: static !important; display: block !important; margin: 0 !important; border: none !important; }
             #viewer-section { background: transparent !important; backdrop-filter: none !important; }
             
@@ -190,25 +238,37 @@
 </head>
 <body class="h-screen flex flex-col relative text-slate-200">
 
+    <!-- Performance-optimized Interactive Mesh Canvas -->
+    <canvas id="ambient-canvas" class="fixed inset-0 pointer-events-none z-[-2]"></canvas>
+
     <!-- Glowing Ambient Orbs for Liquid Background -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
-        <div class="absolute top-[-15%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/20 blur-[120px] mix-blend-screen animate-blob"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-blue-600/20 blur-[120px] mix-blend-screen animate-blob animation-delay-2000"></div>
-        <div class="absolute top-[30%] left-[60%] w-[35%] h-[35%] rounded-full bg-purple-600/15 blur-[100px] mix-blend-screen animate-blob animation-delay-4000"></div>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-[-1] opacity-70">
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/15 blur-[130px] mix-blend-screen animate-blob"></div>
+        <div class="absolute bottom-[-5%] right-[-10%] w-[45%] h-[45%] rounded-full bg-blue-600/15 blur-[130px] mix-blend-screen animate-blob animation-delay-2000"></div>
+        <div class="absolute top-[35%] left-[55%] w-[35%] h-[35%] rounded-full bg-purple-600/10 blur-[110px] mix-blend-screen animate-blob animation-delay-4000"></div>
     </div>
 
     <!-- Liquid Glass Navbar -->
     <header class="glass-header flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 py-3 sm:py-4 shrink-0 z-30 gap-3 md:gap-0 transition-all duration-500">
-        <div class="flex items-center w-full md:w-auto gap-3">
-            <button id="menu-btn" class="p-2 -ml-2 glass-button rounded-xl text-slate-300" title="Toggle Explorer (Cmd/Ctrl + B)">
-                <i data-lucide="menu" class="w-5 h-5"></i>
-            </button>
-            <div class="p-2 rounded-xl bg-blue-500/20 border border-blue-400/30 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                <i data-lucide="book-open" class="text-blue-400 w-5 h-5 sm:w-6 sm:h-6 shrink-0"></i>
+        <div class="flex items-center justify-between w-full md:w-auto gap-3">
+            <div class="flex items-center gap-2">
+                <button id="menu-btn" class="p-2 -ml-2 glass-button rounded-xl text-slate-300" title="Toggle Explorer (Cmd/Ctrl + B)">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+                <div class="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-400/20 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+                    <i data-lucide="book-open" class="text-blue-400 w-5 h-5 sm:w-6 sm:h-6 shrink-0"></i>
+                </div>
+                <h1 class="font-bold text-lg sm:text-xl tracking-tight text-white drop-shadow-md truncate">
+                    Code <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300 font-semibold">Visualizer</span>
+                </h1>
             </div>
-            <h1 class="font-bold text-lg sm:text-xl tracking-tight text-white drop-shadow-md truncate">
-                Code <span class="text-blue-400 hidden sm:inline font-semibold">Visualizer</span><span class="text-blue-400 sm:hidden font-semibold">Viewer</span>
-            </h1>
+
+            <!-- Header Utilities (Sound & Info) -->
+            <div class="flex items-center gap-1.5 md:hidden">
+                <button id="mute-btn" class="p-2 glass-button rounded-xl text-slate-400 hover:text-white" title="Toggle Sounds">
+                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                </button>
+            </div>
         </div>
         
         <div class="flex items-center gap-2 w-full md:flex-1 max-w-xl md:ml-8 z-40">
@@ -216,14 +276,14 @@
                 <div class="relative w-full">
                     <i data-lucide="github" class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-focus-within:text-blue-400 transition-colors duration-300 z-10"></i>
                     <input type="text" id="repo-input" list="recent-repos" value="ThVariableYT/Awesome-BscIT" 
-                        class="w-full bg-black/20 backdrop-blur-md border border-white/10 text-white text-xs sm:text-sm rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 block pl-10 sm:pl-11 p-2 sm:p-3 transition-all duration-300 shadow-inner placeholder-slate-500 outline-none" 
+                        class="w-full bg-black/30 backdrop-blur-md border border-white/8 text-white text-xs sm:text-sm rounded-2xl focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 block pl-10 sm:pl-11 p-2.5 sm:p-3 transition-all duration-300 shadow-inner placeholder-slate-500 outline-none" 
                         placeholder="owner/repository">
                     <datalist id="recent-repos"></datalist>
                 </div>
                 
                 <!-- Liquid Branch Switcher -->
                 <div id="branch-container" class="relative hidden shrink-0">
-                    <button id="branch-trigger" class="glass-button bg-slate-900/60 text-white text-xs sm:text-sm rounded-2xl px-3 py-2 sm:py-3 outline-none cursor-pointer border border-white/10 shadow-inner max-w-[140px] flex items-center gap-2 transition-all" title="Select Branch">
+                    <button id="branch-trigger" class="glass-button bg-slate-900/60 text-white text-xs sm:text-sm rounded-2xl px-3 py-2.5 sm:py-3 outline-none cursor-pointer border border-white/10 shadow-inner max-w-[140px] flex items-center gap-2 transition-all" title="Select Branch">
                         <i data-lucide="git-branch" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
                         <span id="branch-current" class="truncate font-medium">main</span>
                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-300" id="branch-chevron"></i>
@@ -240,20 +300,23 @@
                 </div>
             </div>
             
-            <button id="load-btn" class="glass-button bg-blue-600/40 hover:bg-blue-500/60 text-white font-medium rounded-2xl text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-3 border border-blue-400/40 shadow-[0_4px_20px_rgba(59,130,246,0.4)] flex items-center gap-1 sm:gap-2 shrink-0 group">
-                <i data-lucide="search" class="w-4 h-4 group-hover:rotate-12 transition-transform duration-300"></i> <span class="hidden sm:inline drop-shadow-sm">Load</span>
+            <button id="load-btn" class="glass-button bg-blue-600/30 hover:bg-blue-500/50 text-white font-medium rounded-2xl text-xs sm:text-sm px-4 sm:px-6 py-2.5 sm:py-3 border border-blue-500/30 shadow-[0_4px_20px_rgba(59,130,246,0.25)] flex items-center gap-1.5 sm:gap-2 shrink-0 group">
+                <i data-lucide="arrow-right-to-line" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300"></i> <span class="hidden sm:inline drop-shadow-sm">Load</span>
             </button>
-            <a id="repo-download-btn" href="#" target="_blank" class="hidden glass-button bg-purple-600/40 hover:bg-purple-500/60 text-white font-medium rounded-2xl text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-3 border border-purple-400/40 shadow-[0_4px_20px_rgba(168,85,247,0.4)] flex items-center gap-1 sm:gap-2 shrink-0 group" title="Download Full Repository (.zip)">
+            <a id="repo-download-btn" href="#" target="_blank" class="hidden glass-button bg-purple-600/30 hover:bg-purple-500/50 text-white font-medium rounded-2xl text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 border border-purple-500/30 shadow-[0_4px_20px_rgba(168,85,247,0.25)] flex items-center gap-1.5 sm:gap-2 shrink-0 group" title="Download Full Repository (.zip)">
                 <i data-lucide="folder-down" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform duration-300"></i> <span class="hidden sm:inline drop-shadow-sm">ZIP</span>
             </a>
-            <button id="github-auth-btn" class="glass-button bg-slate-800/40 hover:bg-slate-700/60 text-slate-300 rounded-2xl p-2 sm:p-3 border border-white/10 flex items-center justify-center shrink-0 transition-colors" title="Set GitHub Token (Fix API Limits)">
+            <button id="github-auth-btn" class="glass-button bg-slate-800/40 hover:bg-slate-700/60 text-slate-300 rounded-2xl p-2.5 sm:p-3 border border-white/10 flex items-center justify-center shrink-0 transition-colors" title="Set GitHub Token (Fix API Limits)">
                 <i data-lucide="key" class="w-4 h-4 sm:w-5 sm:h-5"></i>
             </button>
         </div>
         
-        <div class="hidden lg:flex items-center gap-4 text-sm text-slate-300 font-medium shrink-0 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+        <div class="hidden lg:flex items-center gap-4 text-sm text-slate-300 font-medium shrink-0 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/8 backdrop-blur-md">
+            <button id="mute-btn-desktop" class="p-1 glass-button rounded-lg text-slate-400 hover:text-white mr-1" title="Toggle Sound Feedback">
+                <i data-lucide="volume-2" class="w-4 h-4" id="mute-icon"></i>
+            </button>
             <span id="repo-stats" class="flex items-center gap-3">
-                <span class="flex items-center gap-1"><i data-lucide="activity" class="w-4 h-4 text-slate-400"></i> Ready</span>
+                <span class="flex items-center gap-1"><i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i> Ready</span>
             </span>
         </div>
     </header>
@@ -265,8 +328,8 @@
         <div id="sidebar-overlay" class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm z-10 hidden transition-all duration-500"></div>
 
         <!-- Sidebar (File Tree) -->
-        <aside id="sidebar" class="absolute md:relative z-20 w-72 h-full glass-panel border-r border-white/10 flex flex-col overflow-hidden shrink-0 transform -translate-x-full md:translate-x-0 shadow-[10px_0_30px_rgba(0,0,0,0.3)] md:shadow-none">
-            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5 backdrop-blur-md shrink-0">
+        <aside id="sidebar" class="absolute md:relative z-20 w-72 h-full glass-panel border-r border-white/8 flex flex-col overflow-hidden shrink-0 transform -translate-x-full md:translate-x-0 shadow-[10px_0_30px_rgba(0,0,0,0.3)] md:shadow-none">
+            <div class="p-4 border-b border-white/8 flex justify-between items-center bg-white/5 backdrop-blur-md shrink-0">
                 <h2 class="font-semibold text-slate-200 flex items-center gap-2 drop-shadow-sm">
                     <i data-lucide="folder-tree" class="w-4 h-4 text-blue-400"></i> Explorer
                 </h2>
@@ -279,12 +342,12 @@
             <div class="px-3 py-3 border-b border-white/5 bg-white/5 shrink-0">
                 <div class="relative group">
                     <i data-lucide="filter" class="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-focus-within:text-blue-400 transition-colors"></i>
-                    <input type="text" id="file-search" placeholder="Filter files... (Cmd + /)" class="w-full bg-black/20 border border-white/10 text-slate-200 text-xs rounded-lg pl-8 p-1.5 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all placeholder-slate-500 shadow-inner">
+                    <input type="text" id="file-search" placeholder="Filter files... (Cmd + /)" class="w-full bg-black/30 border border-white/8 text-slate-200 text-xs rounded-xl pl-8 p-2 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all placeholder-slate-500 shadow-inner">
                 </div>
             </div>
 
             <!-- Student Bookmarks Section -->
-            <div class="px-3 py-2 border-b border-white/5 bg-white/[0.02] shrink-0">
+            <div class="px-3 py-2 border-b border-white/5 bg-white/[0.01] shrink-0">
                 <h3 class="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-wider flex items-center gap-1.5 drop-shadow-sm">
                     <i data-lucide="star" class="w-3.5 h-3.5 text-yellow-500/70"></i> Study Bookmarks
                 </h3>
@@ -297,7 +360,7 @@
             <div id="tree-container" class="flex-1 overflow-y-auto p-3 text-sm">
                 <div class="flex flex-col items-center justify-center h-full text-slate-400 gap-4">
                     <div class="p-4 rounded-full bg-white/5 border border-white/10">
-                        <i data-lucide="arrow-up" class="w-6 h-6 animate-bounce text-blue-400"></i>
+                        <i data-lucide="folder-open" class="w-6 h-6 animate-pulse text-blue-400"></i>
                     </div>
                     <p class="text-center text-xs sm:text-sm px-4 font-medium">Enter a repository and click Load</p>
                 </div>
@@ -308,7 +371,7 @@
         <section id="viewer-section" class="flex-1 relative flex flex-col min-w-0 bg-black/10 backdrop-blur-3xl transition-colors duration-300">
             
             <!-- File Header -->
-            <div id="file-header" class="h-14 border-b border-white/10 flex items-center px-4 sm:px-6 bg-slate-900/40 backdrop-blur-xl shrink-0 hidden z-10 shadow-sm transition-all duration-300 overflow-x-auto hide-scrollbar">
+            <div id="file-header" class="h-14 border-b border-white/8 flex items-center px-4 sm:px-6 bg-slate-950/40 backdrop-blur-xl shrink-0 hidden z-10 shadow-sm transition-all duration-300 overflow-x-auto hide-scrollbar">
                 <div class="flex items-center gap-3 text-slate-200 text-xs sm:text-sm font-medium shrink-0">
                     <div class="p-1.5 rounded-lg bg-white/10 border border-white/10 shrink-0">
                         <i id="file-header-icon" data-lucide="file" class="w-4 h-4 text-blue-300"></i>
@@ -327,7 +390,7 @@
                     <span id="file-size" class="text-[10px] sm:text-xs font-medium px-2 py-1 rounded-md bg-black/30 border border-white/5 text-slate-400 hidden sm:inline"></span>
                     
                     <!-- Liquid Gemini Actions -->
-                    <button id="explain-btn" class="hidden items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-purple-200 bg-purple-500/20 hover:bg-purple-500/30 rounded-xl border border-purple-400/30 shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 shrink-0" title="Explain Code">
+                    <button id="explain-btn" class="hidden items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-purple-200 bg-purple-500/20 hover:bg-purple-500/30 rounded-xl border border-purple-400/30 shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 ai-pulsing-glow" title="Explain Code">
                         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-purple-300"></i><span class="hidden lg:inline drop-shadow-sm">Explain</span>
                     </button>
                     <button id="improve-btn" class="hidden items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-200 bg-emerald-500/20 hover:bg-emerald-500/30 rounded-xl border border-emerald-400/30 shadow-[0_0_15px_rgba(16,185,129,0.15)] hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all duration-300 hover:scale-105 active:scale-95 shrink-0" title="Suggest Improvements">
@@ -375,31 +438,139 @@
                 </div>
             </div>
 
+            <!-- Glassy File Tabs Bar (Horizontal IDE-like strip) -->
+            <div id="file-tabs-bar" class="h-10 bg-black/40 border-b border-white/5 flex items-center px-4 overflow-x-auto hide-scrollbar shrink-0 z-10 select-none gap-1 hidden">
+                <!-- Dynamically injected tabs -->
+            </div>
+
             <!-- Content Area Wrapper for Split View -->
             <div class="flex-1 flex overflow-hidden relative">
                 
                 <div id="content-container" class="flex-1 overflow-auto relative min-w-0">
                     
-                    <!-- Initial State -->
-                    <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
-                        <div class="p-6 rounded-3xl bg-white/5 border border-white/10 shadow-2xl backdrop-blur-xl mb-6">
-                            <i data-lucide="layers" class="w-12 h-12 sm:w-16 sm:h-16 text-blue-400/80"></i>
+                    <!-- Beautiful Developer Dashboard State (Replaces boring empty state) -->
+                    <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-start overflow-y-auto p-6 text-slate-400 scroll-smooth hide-scrollbar">
+                        
+                        <!-- Hero Brand Area -->
+                        <div class="mt-8 mb-12 flex flex-col items-center text-center max-w-lg">
+                            <div class="relative mb-6">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-blue-500 to-indigo-500 rounded-3xl blur-2xl opacity-40 scale-125 animate-pulse"></div>
+                                <div class="relative p-6 rounded-3xl bg-slate-900/60 border border-white/10 shadow-2xl backdrop-blur-xl">
+                                    <i data-lucide="code-2" class="w-12 h-12 text-blue-400"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md tracking-tight">Welcome to Code Visualizer</h2>
+                            <p class="text-sm sm:text-base mt-3 text-slate-400 font-medium">An elegant, interactive workspace designed to explore, audit, and analyze repository source codes with instant AI assistance.</p>
                         </div>
-                        <p class="text-lg sm:text-xl font-semibold text-white drop-shadow-md">No file selected</p>
-                        <p class="text-sm sm:text-base mt-2 font-medium opacity-70">Select a file from the explorer to view its contents</p>
+
+                        <!-- Live Repository Info Dashboard widget -->
+                        <div id="dashboard-repo-summary" class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 hidden">
+                            <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-md flex items-center gap-4">
+                                <div class="p-3 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20"><i data-lucide="files" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="text-[10px] font-bold tracking-wider text-slate-500 uppercase">Tree Nodes</p>
+                                    <p id="stat-files-count" class="text-xl font-bold text-white mt-0.5">0</p>
+                                </div>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-md flex items-center gap-4">
+                                <div class="p-3 rounded-xl bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"><i data-lucide="star" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="text-[10px] font-bold tracking-wider text-slate-500 uppercase">Study Bookmarks</p>
+                                    <p id="stat-bookmarks-count" class="text-xl font-bold text-white mt-0.5">0</p>
+                                </div>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-md flex items-center gap-4">
+                                <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20"><i data-lucide="git-branch" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="text-[10px] font-bold tracking-wider text-slate-500 uppercase">Active Branch</p>
+                                    <p id="stat-branch-name" class="text-xl font-bold text-white mt-0.5">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Load Suggestion Section -->
+                        <div class="w-full max-w-4xl mb-10">
+                            <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping"></span> Featured Repositories
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                <div onclick="quickLoadRepo('ThVariableYT/Awesome-BscIT')" class="interactive-card p-5 rounded-2xl text-left cursor-pointer select-none">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <i data-lucide="library" class="text-blue-400 w-5 h-5"></i>
+                                        <span class="text-[10px] bg-blue-500/10 text-blue-300 font-semibold px-2 py-0.5 rounded-full border border-blue-500/20">University Notes</span>
+                                    </div>
+                                    <h4 class="font-bold text-white text-sm truncate">Awesome-BscIT</h4>
+                                    <p class="text-xs text-slate-400 mt-1 line-clamp-2">Study guides, university practicals, reference codes, and documentation files.</p>
+                                </div>
+
+                                <div onclick="quickLoadRepo('facebook/react')" class="interactive-card p-5 rounded-2xl text-left cursor-pointer select-none">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <i data-lucide="component" class="text-indigo-400 w-5 h-5"></i>
+                                        <span class="text-[10px] bg-indigo-500/10 text-indigo-300 font-semibold px-2 py-0.5 rounded-full border border-indigo-500/20">Core Engine</span>
+                                    </div>
+                                    <h4 class="font-bold text-white text-sm truncate">React Core</h4>
+                                    <p class="text-xs text-slate-400 mt-1 line-clamp-2">A JavaScript library for building component-driven graphical user interfaces.</p>
+                                </div>
+
+                                <div onclick="quickLoadRepo('tailwindlabs/tailwindcss')" class="interactive-card p-5 rounded-2xl text-left cursor-pointer select-none">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <i data-lucide="palette" class="text-purple-400 w-5 h-5"></i>
+                                        <span class="text-[10px] bg-purple-500/10 text-purple-300 font-semibold px-2 py-0.5 rounded-full border border-purple-500/20">CSS Framework</span>
+                                    </div>
+                                    <h4 class="font-bold text-white text-sm truncate">Tailwind CSS</h4>
+                                    <p class="text-xs text-slate-400 mt-1 line-clamp-2">Utility-first CSS framework source code featuring modular layout engines.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sleek Keyboard Shortcuts card -->
+                        <div class="w-full max-w-4xl p-6 rounded-2xl bg-white/[0.01] border border-white/5 backdrop-blur-md text-left mb-8">
+                            <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-1.5">
+                                <i data-lucide="keyboard" class="w-4 h-4 text-slate-400"></i> Navigation Keyboard Commands
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300">
+                                <div class="flex items-center justify-between py-1 border-b border-white/5">
+                                    <span>Toggle File Tree Explorer</span>
+                                    <kbd class="px-2 py-1 bg-white/10 rounded-lg border border-white/10 font-mono text-[10px]">Ctrl + B</kbd>
+                                </div>
+                                <div class="flex items-center justify-between py-1 border-b border-white/5">
+                                    <span>Filter Files & Directories</span>
+                                    <kbd class="px-2 py-1 bg-white/10 rounded-lg border border-white/10 font-mono text-[10px]">Ctrl + /</kbd>
+                                </div>
+                                <div class="flex items-center justify-between py-1 border-b border-white/5">
+                                    <span>Study Bookmark Current File</span>
+                                    <kbd class="px-2 py-1 bg-white/10 rounded-lg border border-white/10 font-mono text-[10px]">Ctrl + S</kbd>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <!-- Loading State -->
-                    <div id="loading-state" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-2xl z-10 hidden transition-all duration-300">
-                        <div class="p-4 rounded-2xl bg-white/10 border border-white/20 shadow-2xl mb-4">
-                            <i data-lucide="loader-2" class="w-8 h-8 text-blue-400 spinner"></i>
+                    <!-- Sleek Skeleton Loader (Replaces standard spinner with code template) -->
+                    <div id="loading-state" class="absolute inset-0 flex flex-col justify-start bg-slate-950/80 backdrop-blur-3xl z-10 hidden p-10">
+                        <div class="max-w-3xl w-full mx-auto space-y-6 animate-pulse">
+                            <div class="flex items-center gap-3">
+                                <div class="p-3 rounded-2xl bg-white/5 border border-white/10 shadow-lg">
+                                    <i data-lucide="loader-2" class="w-6 h-6 spinner text-blue-400"></i>
+                                </div>
+                                <p class="text-sm font-semibold text-slate-200 drop-shadow-md" id="loading-text">Assembling visual presentation...</p>
+                            </div>
+                            <div class="space-y-3 pt-6">
+                                <div class="skeleton-line w-1/3"></div>
+                                <div class="skeleton-line w-full"></div>
+                                <div class="skeleton-line w-5/6"></div>
+                                <div class="skeleton-line w-4/5"></div>
+                                <div class="skeleton-line w-2/3"></div>
+                                <div class="skeleton-line w-1/2"></div>
+                                <div class="skeleton-line w-3/4"></div>
+                                <div class="skeleton-line w-4/5"></div>
+                            </div>
                         </div>
-                        <p class="text-sm sm:text-base font-medium text-slate-200 drop-shadow-md" id="loading-text">Fetching file data...</p>
                     </div>
 
                     <!-- Code Block (with Line Numbers Wrapper) -->
                     <div id="code-container" class="hidden flex relative min-h-full w-full font-mono transition-colors duration-300">
-                        <div id="line-numbers" class="shrink-0 text-right px-4 sm:px-5 py-4 sm:py-6 text-slate-500/70 border-r border-white/5 select-none bg-white/[0.02] text-[13px] leading-relaxed transition-all duration-200"></div>
+                        <div id="line-numbers" class="shrink-0 text-right px-4 sm:px-5 py-4 sm:py-6 text-slate-500/70 border-r border-white/5 select-none bg-white/[0.015] text-[13px] leading-relaxed transition-all duration-200"></div>
                         <pre id="code-wrapper" class="m-0 p-4 sm:p-6 flex-1 overflow-x-auto"><code id="code-display" class="text-[13px] leading-relaxed tracking-wide block"></code></pre>
                     </div>
                     
@@ -457,6 +628,252 @@
     </div>
 
     <script>
+        // Sound System Controller (Synthesized with pure JS)
+        class SoundEngine {
+            constructor() {
+                this.enabled = localStorage.getItem('sound_enabled') !== 'false';
+                this.ctx = null;
+                this.updateButtonUI();
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            toggle() {
+                this.enabled = !this.enabled;
+                localStorage.setItem('sound_enabled', this.enabled);
+                this.updateButtonUI();
+                if (this.enabled) {
+                    this.init();
+                    this.playNotify();
+                }
+            }
+
+            updateButtonUI() {
+                const btns = [document.getElementById('mute-btn'), document.getElementById('mute-btn-desktop')];
+                btns.forEach(btn => {
+                    if (btn) {
+                        const icon = btn.querySelector('[data-lucide]');
+                        if (icon) {
+                            if (this.enabled) {
+                                icon.setAttribute('data-lucide', 'volume-2');
+                                btn.classList.remove('text-red-400');
+                                btn.classList.add('text-slate-400');
+                            } else {
+                                icon.setAttribute('data-lucide', 'volume-x');
+                                btn.classList.remove('text-slate-400');
+                                btn.classList.add('text-red-400');
+                            }
+                        }
+                    }
+                });
+                if (window.lucide) window.lucide.createIcons();
+            }
+
+            playSoftClick() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(150, this.ctx.currentTime + 0.1);
+                
+                gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.11);
+            }
+
+            playTabSwitch() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.08);
+                
+                gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.09);
+            }
+
+            playNotify() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                
+                const playBeep = (freq, delay, vol) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + delay);
+                    
+                    gain.gain.setValueAtTime(vol, now + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.12);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    
+                    osc.start(now + delay);
+                    osc.stop(now + delay + 0.13);
+                };
+
+                playBeep(523.25, 0, 0.02); // C5
+                playBeep(659.25, 0.08, 0.02); // E5
+            }
+
+            playError() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(160, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(110, this.ctx.currentTime + 0.25);
+                
+                gain.gain.setValueAtTime(0.03, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.26);
+            }
+        }
+
+        const sounds = new SoundEngine();
+
+        // Mute listeners
+        const muteBtns = [document.getElementById('mute-btn'), document.getElementById('mute-btn-desktop')];
+        muteBtns.forEach(btn => {
+            if (btn) btn.addEventListener('click', () => sounds.toggle());
+        });
+
+        // Custom interactive visual ambient canvas drift particle physics system
+        class AmbientCanvas {
+            constructor() {
+                this.canvas = document.getElementById('ambient-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.mouse = { x: -1000, y: -1000, radius: 180 };
+                this.color = 'rgba(99, 102, 241, 0.06)';
+                
+                this.init();
+                window.addEventListener('resize', () => this.resize());
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                });
+                window.addEventListener('mouseleave', () => {
+                    this.mouse.x = -1000;
+                    this.mouse.y = -1000;
+                });
+                this.animate();
+            }
+
+            init() {
+                this.resize();
+                this.particles = [];
+                const count = Math.min(Math.floor((this.canvas.width * this.canvas.height) / 18000), 75);
+                for (let i = 0; i < count; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.4,
+                        vy: (Math.random() - 0.5) * 0.4,
+                        radius: Math.random() * 2 + 1,
+                        originVx: (Math.random() - 0.5) * 0.4,
+                        originVy: (Math.random() - 0.5) * 0.4
+                    });
+                }
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                const particlesLength = this.particles.length;
+                for (let i = 0; i < particlesLength; i++) {
+                    const p = this.particles[i];
+                    
+                    // Simple friction/inertia
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // Float ambiently
+                    p.vx += (p.originVx - p.vx) * 0.02;
+                    p.vy += (p.originVy - p.vy) * 0.02;
+
+                    // Boundary Bounce
+                    if (p.x < 0 || p.x > this.canvas.width) p.originVx *= -1;
+                    if (p.y < 0 || p.y > this.canvas.height) p.originVy *= -1;
+
+                    // Mouse interactions (repel)
+                    const dx = p.x - this.mouse.x;
+                    const dy = p.y - this.mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < this.mouse.radius) {
+                        const force = (this.mouse.radius - dist) / this.mouse.radius;
+                        const angle = Math.atan2(dy, dx);
+                        p.vx += Math.cos(angle) * force * 1.5;
+                        p.vy += Math.sin(angle) * force * 1.5;
+                    }
+
+                    // Draw Node Particle
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = this.color;
+                    this.ctx.fill();
+
+                    // Connection Line calculations
+                    for (let j = i + 1; j < particlesLength; j++) {
+                        const p2 = this.particles[j];
+                        const lDx = p.x - p2.x;
+                        const lDy = p.y - p2.y;
+                        const lDist = Math.sqrt(lDx * lDx + lDy * lDy);
+                        if (lDist < 120) {
+                            const alpha = (120 - lDist) / 120 * 0.04;
+                            this.ctx.strokeStyle = `rgba(129, 140, 248, ${alpha})`;
+                            this.ctx.lineWidth = 0.8;
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(p.x, p.y);
+                            this.ctx.lineTo(p2.x, p2.y);
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+                
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        window.onload = function() {
+            new AmbientCanvas();
+        }
+
         // Initialize Icons
         lucide.createIcons();
 
@@ -536,6 +953,83 @@
         let currentFlatTree = [];
         let currentFontSize = 13;
         let isLightTheme = false;
+        
+        // Tabs state & controls
+        let openedTabs = []; // Array of node/file objects
+
+        function renderTabs() {
+            const tabsBar = document.getElementById('file-tabs-bar');
+            if (openedTabs.length === 0) {
+                tabsBar.classList.add('hidden');
+                return;
+            }
+            tabsBar.classList.remove('hidden');
+
+            tabsBar.innerHTML = openedTabs.map((tab, i) => {
+                const isActive = tab.path === currentFilePath;
+                const fileIcon = getIconForFile(tab.name);
+                return `
+                    <div class="file-tab flex items-center gap-2 h-full px-4 text-xs font-medium cursor-pointer border-r border-white/5 transition-all text-slate-400 hover:bg-white/[0.04] hover:text-white relative ${isActive ? 'active bg-slate-900/50 border-b-2 border-b-blue-500 text-white' : ''}" onclick="switchTab('${tab.path}')">
+                        <i data-lucide="${fileIcon}" class="w-3.5 h-3.5 text-blue-400"></i>
+                        <span class="truncate max-w-[120px]">${tab.name}</span>
+                        <button class="p-0.5 rounded-full hover:bg-white/10 ml-1.5 transition-colors group/close" onclick="closeTab('${tab.path}', event)">
+                            <i data-lucide="x" class="w-3 h-3 text-slate-500 group-hover/close:text-slate-200"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        window.switchTab = (path) => {
+            const file = openedTabs.find(t => t.path === path);
+            if (file) {
+                sounds.playTabSwitch();
+                // Find matching explorer item and set active class
+                const explorerItem = document.querySelector(`[data-path="${path.toLowerCase()}"]`);
+                loadFileContent(file, explorerItem);
+            }
+        }
+
+        window.closeTab = (path, event) => {
+            event.stopPropagation();
+            sounds.playSoftClick();
+            
+            const index = openedTabs.findIndex(t => t.path === path);
+            if (index !== -1) {
+                openedTabs.splice(index, 1);
+                
+                // If closed tab was active, switch to next available tab
+                if (currentFilePath === path) {
+                    if (openedTabs.length > 0) {
+                        const nextTab = openedTabs[Math.max(0, index - 1)];
+                        switchTab(nextTab.path);
+                    } else {
+                        // Reset all viewers to empty dashboard
+                        currentFilePath = '';
+                        currentFileName = '';
+                        currentFileUrl = '';
+                        fileHeader.classList.add('hidden');
+                        codeContainer.classList.add('hidden');
+                        markdownWrapper.classList.add('hidden');
+                        imageWrapper.classList.add('hidden');
+                        docWrapper.classList.add('hidden');
+                        emptyState.classList.remove('hidden');
+                        updateDashboardStats();
+                    }
+                } else {
+                    renderTabs();
+                }
+            }
+        }
+
+        function addTab(file) {
+            if (!openedTabs.some(t => t.path === file.path)) {
+                openedTabs.push(file);
+            }
+            renderTabs();
+        }
 
         // File Icons Mapping
         const iconMap = {
@@ -559,11 +1053,13 @@
             // Cmd/Ctrl + B (Toggle Sidebar)
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
                 e.preventDefault();
+                sounds.playSoftClick();
                 toggleSidebar();
             }
             // Cmd/Ctrl + / (Focus Search)
             if ((e.metaKey || e.ctrlKey) && e.key === '/') {
                 e.preventDefault();
+                sounds.playSoftClick();
                 if(sidebar.classList.contains('desktop-collapsed')) toggleSidebar();
                 fileSearchInput.focus();
             }
@@ -601,7 +1097,7 @@
             const repoBookmarks = bookmarksMap[currentRepo] || [];
             
             if (repoBookmarks.length === 0) {
-                list.innerHTML = '<p class="text-slate-500 italic px-2 py-1">No bookmarks in this repo.</p>';
+                list.innerHTML = '<p class="text-slate-500 italic px-2 py-1 text-xs">No bookmarks in this repo.</p>';
                 return;
             }
             
@@ -611,7 +1107,8 @@
                     <span class="truncate tracking-wide">${b.name}</span>
                 </div>
             `).join('');
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
+            updateDashboardStats();
         }
 
         function updateBookmarkUI() {
@@ -635,6 +1132,7 @@
 
         bookmarkBtn.addEventListener('click', () => {
             if (!currentFilePath) return;
+            sounds.playSoftClick();
             if (!bookmarksMap[currentRepo]) bookmarksMap[currentRepo] = [];
             
             const repoBookmarks = bookmarksMap[currentRepo];
@@ -651,6 +1149,7 @@
         });
 
         window.loadBookmark = (path) => {
+            sounds.playSoftClick();
             const fileObj = currentFlatTree.find(f => f.path === path);
             if (fileObj) {
                 document.querySelectorAll('.tree-item').forEach(el => el.classList.remove('active'));
@@ -675,6 +1174,7 @@
         };
 
         const showError = (msg) => {
+            sounds.playError();
             const toast = document.getElementById('error-toast');
             document.getElementById('error-message').textContent = msg;
             toast.style.transform = 'translateY(0)';
@@ -701,6 +1201,7 @@
 
         // Custom Dropdown UI Logic
         const toggleBranchDropdown = () => {
+            sounds.playSoftClick();
             const isExpanded = branchDropdown.classList.contains('opacity-100');
             if (isExpanded) {
                 closeBranchDropdown();
@@ -732,8 +1233,9 @@
         }
 
         githubAuthBtn.addEventListener('click', () => {
+            sounds.playSoftClick();
             const currentToken = localStorage.getItem('github_token') || '';
-            const token = prompt("To bypass GitHub's 60 requests/hr limit, enter a GitHub Personal Access Token:\n(Leave blank to remove current token)", currentToken);
+            const token = prompt("To bypass GitHub's API rate limits, enter a Personal Access Token (PAT):\n(Leave blank to discard)", currentToken);
             if (token !== null) {
                 if (token.trim() === '') {
                     localStorage.removeItem('github_token');
@@ -743,6 +1245,7 @@
                     localStorage.setItem('github_token', token.trim());
                     githubAuthBtn.classList.remove('text-slate-300');
                     githubAuthBtn.classList.add('text-yellow-400');
+                    sounds.playNotify();
                 }
             }
         });
@@ -752,8 +1255,31 @@
             githubAuthBtn.classList.add('text-yellow-400');
         }
 
+        // Quick Loader triggers
+        window.quickLoadRepo = (repoName) => {
+            repoInput.value = repoName;
+            fetchRepo();
+        }
+
+        // Live Dashboard Statistics Manager
+        function updateDashboardStats() {
+            const summary = document.getElementById('dashboard-repo-summary');
+            if (currentRepo) {
+                summary.classList.remove('hidden');
+                document.getElementById('stat-files-count').textContent = currentFlatTree.length;
+                
+                const repoBookmarks = bookmarksMap[currentRepo] || [];
+                document.getElementById('stat-bookmarks-count').textContent = repoBookmarks.length;
+                
+                document.getElementById('stat-branch-name').textContent = defaultBranch;
+            } else {
+                summary.classList.add('hidden');
+            }
+        }
+
         // GitHub API Fetcher
         async function fetchRepo() {
+            sounds.playSoftClick();
             const repoPath = repoInput.value.trim().replace(/^https?:\/\/github\.com\//, '');
             if (!repoPath || !repoPath.includes('/')) {
                 showError("Please enter a valid format: username/repository");
@@ -771,7 +1297,7 @@
                     </div>
                     <p class="text-xs sm:text-sm font-medium">Fetching repository details...</p>
                 </div>`;
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
             
             try {
                 const repoRes = await fetch(`https://api.github.com/repos/${repoPath}`, { headers: getGithubHeaders() });
@@ -807,7 +1333,7 @@
                     
                     branchCurrent.textContent = defaultBranch;
                     branchContainer.classList.remove('hidden');
-                    lucide.createIcons();
+                    if (window.lucide) window.lucide.createIcons();
 
                     document.querySelectorAll('.branch-option').forEach(btn => {
                         btn.addEventListener('click', (e) => {
@@ -827,7 +1353,7 @@
                                     }
                                 });
                                 e.currentTarget.insertAdjacentHTML('beforeend', '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>');
-                                lucide.createIcons();
+                                if (window.lucide) window.lucide.createIcons();
 
                                 document.getElementById('empty-state').classList.remove('hidden');
                                 document.getElementById('code-container').classList.add('hidden');
@@ -835,6 +1361,8 @@
                                 document.getElementById('image-wrapper').classList.add('hidden');
                                 document.getElementById('doc-wrapper').classList.add('hidden');
                                 document.getElementById('file-header').classList.add('hidden');
+                                openedTabs = [];
+                                renderTabs();
                                 closeAIPanel();
                             }
                             closeBranchDropdown();
@@ -843,6 +1371,7 @@
                 }
 
                 await fetchTreeOnly(currentRepo, defaultBranch);
+                sounds.playNotify();
 
             } catch (err) {
                 treeContainer.innerHTML = `
@@ -852,7 +1381,7 @@
                         </div>
                         <p class="text-xs sm:text-sm font-medium">${err.message}</p>
                     </div>`;
-                lucide.createIcons();
+                if (window.lucide) window.lucide.createIcons();
                 showError(err.message);
                 branchContainer.classList.add('hidden');
                 repoDownloadBtn.classList.add('hidden');
@@ -867,7 +1396,7 @@
                     </div>
                     <p class="text-xs sm:text-sm font-medium">Fetching file tree...</p>
                 </div>`;
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
             
             try {
                 const treeRes = await fetch(`https://api.github.com/repos/${repoPath}/git/trees/${branch}?recursive=1`, { headers: getGithubHeaders() });
@@ -878,6 +1407,7 @@
                 const treeData = await treeRes.json();
                 currentFlatTree = treeData.tree;
                 renderTreeUI(currentFlatTree);
+                updateDashboardStats();
             } catch(err) {
                 treeContainer.innerHTML = `<p class="text-center p-4 text-red-400">${err.message}</p>`;
             }
@@ -932,6 +1462,7 @@
                         childrenContainer.appendChild(createNodeElement(child, depth + 1));
                         
                         itemDiv.onclick = (e) => {
+                            sounds.playSoftClick();
                             const chevron = itemDiv.querySelector('[data-lucide="chevron-right"]');
                             const isCollapsed = childrenContainer.classList.contains('collapsed');
                             
@@ -972,7 +1503,10 @@
                             <span class="truncate tracking-wide file-name-label">${child.name}</span>
                         `;
                         
-                        itemDiv.onclick = () => loadFileContent(child, itemDiv);
+                        itemDiv.onclick = () => {
+                            sounds.playSoftClick();
+                            loadFileContent(child, itemDiv);
+                        }
                         container.appendChild(itemDiv);
                     }
                 });
@@ -982,7 +1516,7 @@
             treeContainer.innerHTML = '';
             fileSearchInput.value = ''; // Reset search
             treeContainer.appendChild(createNodeElement(root));
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
 
             // Auto-load root README.md if it exists, otherwise fallback to any README
             const rootReadme = treeContainer.querySelector('[data-path="readme.md"]');
@@ -1038,7 +1572,7 @@
                     }
                 }
             });
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
         });
 
         // Theme and Display Controls
@@ -1048,6 +1582,7 @@
         }
 
         fontIncreaseBtn.addEventListener('click', () => {
+            sounds.playSoftClick();
             if (currentFontSize < 28) {
                 currentFontSize += 2;
                 applyFontSize();
@@ -1055,6 +1590,7 @@
         });
 
         fontDecreaseBtn.addEventListener('click', () => {
+            sounds.playSoftClick();
             if (currentFontSize > 8) {
                 currentFontSize -= 2;
                 applyFontSize();
@@ -1062,6 +1598,7 @@
         });
 
         themeBtn.addEventListener('click', () => {
+            sounds.playSoftClick();
             isLightTheme = !isLightTheme;
             
             if (isLightTheme) {
@@ -1073,7 +1610,7 @@
                 themeBtn.innerHTML = '<i data-lucide="sun" class="w-4 h-4"></i>';
                 viewerSection.classList.remove('light-code-theme');
             }
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
         });
 
         // Fetch and Display File Content
@@ -1108,7 +1645,7 @@
             fileSize.textContent = formatBytes(file.size);
             const iconName = getIconForFile(file.name);
             document.getElementById('file-header-icon').setAttribute('data-lucide', iconName);
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
 
             const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : file.name.toLowerCase();
             const rawUrl = `https://raw.githubusercontent.com/${currentRepo}/${defaultBranch}/${file.path}`;
@@ -1119,6 +1656,8 @@
             currentFileName = file.name;
             currentFilePath = file.path;
             
+            // Sync dynamic Tabs
+            addTab(file);
             updateBookmarkUI();
 
             try {
@@ -1156,7 +1695,7 @@
                         <p class="text-base sm:text-lg font-semibold text-white drop-shadow-md">Unsupported format</p>
                         <p class="text-xs sm:text-sm mt-2 text-slate-400 text-center max-w-[250px] sm:max-w-sm">Previewing this file format is not supported. Use the raw link to view or download.</p>
                     `;
-                    lucide.createIcons();
+                    if (window.lucide) window.lucide.createIcons();
                     explainBtn.classList.add('hidden');
                     improveBtn.classList.add('hidden');
                     wrapBtn.classList.add('hidden');
@@ -1175,7 +1714,7 @@
                         <p class="text-base sm:text-lg font-semibold text-white drop-shadow-md">File too large</p>
                         <p class="text-xs sm:text-sm mt-2 text-slate-400 text-center max-w-[250px] sm:max-w-sm">This file is too large (${formatBytes(file.size)}) to preview safely in the browser.</p>
                     `;
-                    lucide.createIcons();
+                    if (window.lucide) window.lucide.createIcons();
                     explainBtn.classList.add('hidden');
                     improveBtn.classList.add('hidden');
                     wrapBtn.classList.add('hidden');
@@ -1211,7 +1750,7 @@
                     
                     if (!aiPanel.classList.contains('hidden')) {
                          aiContent.innerHTML = '<div class="p-4 rounded-xl bg-white/5 border border-white/10 text-center text-sm text-slate-400"><i data-lucide="mouse-pointer-click" class="w-5 h-5 mx-auto mb-2 opacity-50"></i>Select an action above to analyze this new file.</div>';
-                         lucide.createIcons();
+                         if (window.lucide) window.lucide.createIcons();
                     }
                 } else {
                     const res = await fetch(rawUrl);
@@ -1250,7 +1789,7 @@
                     
                     if (!aiPanel.classList.contains('hidden')) {
                          aiContent.innerHTML = '<div class="p-4 rounded-xl bg-white/5 border border-white/10 text-center text-sm text-slate-400"><i data-lucide="mouse-pointer-click" class="w-5 h-5 mx-auto mb-2 opacity-50"></i>Select an action above to analyze this new file.</div>';
-                         lucide.createIcons();
+                         if (window.lucide) window.lucide.createIcons();
                     }
                 }
             } catch (err) {
@@ -1263,23 +1802,26 @@
                     <p class="text-base sm:text-lg font-semibold text-white drop-shadow-md">Cannot load file</p>
                     <p class="text-xs sm:text-sm mt-2 text-slate-400 text-center max-w-[250px] sm:max-w-sm">This file might be a binary format or threw a network error.</p>
                 `;
-                lucide.createIcons();
+                if (window.lucide) window.lucide.createIcons();
             }
         }
 
         // Feature Additions: Print to PDF
         printBtn.addEventListener('click', () => {
+            sounds.playSoftClick();
             window.print();
         });
 
         copyPathBtn.addEventListener('click', () => {
             if (currentFilePath) {
+                sounds.playSoftClick();
                 navigator.clipboard.writeText(currentFilePath).then(() => {
                     const originalIcon = copyPathBtn.innerHTML;
                     copyPathBtn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>';
-                    lucide.createIcons();
+                    if (window.lucide) window.lucide.createIcons();
                     setTimeout(() => {
                         copyPathBtn.innerHTML = originalIcon;
+                        if (window.lucide) window.lucide.createIcons();
                     }, 2000);
                 });
             }
@@ -1287,6 +1829,7 @@
 
         // Feature Additions: Toggle Word Wrap
         wrapBtn.addEventListener('click', () => {
+            sounds.playSoftClick();
             codeDisplay.classList.toggle('whitespace-pre-wrap');
             codeDisplay.classList.toggle('break-words');
             
@@ -1301,6 +1844,7 @@
 
         // Feature Additions: Fullscreen & Downloading
         fullscreenBtn.addEventListener('click', () => {
+            sounds.playSoftClick();
             if (!document.fullscreenElement) {
                 viewerSection.requestFullscreen().catch(err => {
                     showError(`Cannot enable fullscreen: ${err.message}`);
@@ -1316,10 +1860,11 @@
             } else {
                 fullscreenBtn.innerHTML = '<i data-lucide="maximize" class="w-4 h-4"></i>';
             }
-            lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
         });
 
         downloadBtn.addEventListener('click', async () => {
+            sounds.playSoftClick();
             if (!currentFileUrl) return;
             try {
                 const res = await fetch(currentFileUrl);
@@ -1333,6 +1878,7 @@
                 a.click();
                 window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
+                sounds.playNotify();
             } catch(e) {
                 showError("Failed to download file.");
             }
@@ -1345,9 +1891,9 @@
         });
 
         // Mobile Sidebar Listeners
-        menuBtn.addEventListener('click', toggleSidebar);
-        closeSidebarBtn.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', toggleSidebar);
+        menuBtn.addEventListener('click', () => { sounds.playSoftClick(); toggleSidebar(); });
+        closeSidebarBtn.addEventListener('click', () => { sounds.playSoftClick(); toggleSidebar(); });
+        sidebarOverlay.addEventListener('click', () => { sounds.playSoftClick(); toggleSidebar(); });
 
         // --- Gemini AI Logic ---
         const apiKey = ""; // Paste your key exactly between these quotes.
@@ -1365,7 +1911,7 @@
             aiPanel.classList.remove('flex');
         }
         
-        closeAiBtn.addEventListener('click', closeAIPanel);
+        closeAiBtn.addEventListener('click', () => { sounds.playSoftClick(); closeAIPanel(); });
 
         async function callGemini(promptText, systemInstruction) {
             const currentKey = apiKey || userApiKey;
@@ -1424,6 +1970,7 @@
 
         async function handleAIAction(action) {
             if (!codeDisplay.textContent) return;
+            sounds.playSoftClick();
             
             if (!apiKey && !userApiKey) {
                 const key = prompt("To use AI features, please enter your Google Gemini API Key:\n(Get one from aistudio.google.com)");
@@ -1454,6 +2001,7 @@
             try {
                 const result = await callGemini(promptText, sys);
                 aiContent.innerHTML = marked.parse(result);
+                sounds.playNotify();
             } catch (e) {
                 aiContent.innerHTML = `
                 <div class="text-red-300 bg-red-950/50 p-4 rounded-xl border border-red-500/30 flex items-start gap-3 backdrop-blur-md shadow-lg">
@@ -1462,7 +2010,7 @@
                     </div>
                     <span class="text-sm font-medium leading-relaxed">${e.message}</span>
                 </div>`;
-                lucide.createIcons();
+                if (window.lucide) window.lucide.createIcons();
             } finally {
                 aiLoading.classList.add('hidden');
                 aiLoading.classList.remove('flex');
@@ -1480,18 +2028,20 @@
 
         copyBtn.addEventListener('click', () => {
             if (codeDisplay.textContent) {
+                sounds.playSoftClick();
                 navigator.clipboard.writeText(codeDisplay.textContent).then(() => {
                     const originalIcon = copyBtn.innerHTML;
                     copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>';
-                    lucide.createIcons();
+                    if (window.lucide) window.lucide.createIcons();
                     setTimeout(() => {
                         copyBtn.innerHTML = originalIcon;
+                        if (window.lucide) window.lucide.createIcons();
                     }, 2000);
                 });
             }
         });
 
-        lucide.createIcons();
+        if (window.lucide) window.lucide.createIcons();
 
     </script>
 </body>
